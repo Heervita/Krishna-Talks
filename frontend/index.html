@@ -185,170 +185,71 @@
    </footer>
   </div>
   <script>
-    // Krishna's wisdom responses
-    const krishnaWisdom = [
-      "The soul is neither born, nor does it ever die. It is unborn, eternal, ever-existing, and primeval. The soul is not slain when the body is slain.",
-      "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results, nor be attached to inaction.",
-      "When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place.",
-      "One who sees inaction in action, and action in inaction, is intelligent among men.",
-      "The peace that comes from within is the only peace that lasts. Seek not happiness in the external world, for true joy resides in your heart.",
-      "Detachment is not that you own nothing, but that nothing owns you. Be in this world, yet not of it.",
-      "Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good.",
-      "Set your heart upon your work, but never on its reward. Work not for the reward, but never cease to do your work.",
-      "When a person responds to the joys and sorrows of others as if they were their own, they have attained the highest state of spiritual union.",
-      "There is neither this world, nor the world beyond. Happiness lies in the present moment, where peace of mind resides.",
-      "The mind is restless and difficult to restrain, but with practice and detachment, it can be controlled.",
-      "Through selfless service, you will always be fruitful and find the fulfillment of your desires.",
-      "One who has control over the mind is tranquil in heat and cold, in pleasure and pain, and in honor and dishonor.",
-      "The wise see that there is action in the midst of inaction and inaction in the midst of action.",
-      "Let your concern be with action alone, and never with the fruits of action. Do not let the results of action be your motive."
-    ];
-
-    // Default configuration
-    const defaultConfig = {
-      title: "Lord Krishna Talks",
-      subtitle: "Seek wisdom, find peace",
-      welcome_message: "Namaste, dear soul. I am here to share the wisdom of the Bhagavad Gita with you. What weighs upon your heart today? Ask me anything about life, purpose, duty, or inner peace.",
-      background_color: "#fdf6e3",
-      text_color: "#5a4a3a",
-      accent_color: "#c9a87c",
-      secondary_accent: "#d4967e",
-      surface_color: "#ffffff"
-    };
-
-    // Initialize Element SDK
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (config) => {
-          document.getElementById('main-title').textContent = config.title || defaultConfig.title;
-          document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
-          document.getElementById('welcome-text').textContent = config.welcome_message || defaultConfig.welcome_message;
-        },
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => window.elementSdk.setConfig({ background_color: value })
-            },
-            {
-              get: () => config.surface_color || defaultConfig.surface_color,
-              set: (value) => window.elementSdk.setConfig({ surface_color: value })
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => window.elementSdk.setConfig({ text_color: value })
-            },
-            {
-              get: () => config.accent_color || defaultConfig.accent_color,
-              set: (value) => window.elementSdk.setConfig({ accent_color: value })
-            },
-            {
-              get: () => config.secondary_accent || defaultConfig.secondary_accent,
-              set: (value) => window.elementSdk.setConfig({ secondary_accent: value })
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ["title", config.title || defaultConfig.title],
-          ["subtitle", config.subtitle || defaultConfig.subtitle],
-          ["welcome_message", config.welcome_message || defaultConfig.welcome_message]
-        ])
-      });
-    }
-
-    // Chat functionality
     const chatMessages = document.getElementById('chat-messages');
     const chatForm = document.getElementById('chat-form');
     const userInput = document.getElementById('user-input');
     const typingIndicator = document.getElementById('typing-indicator');
 
+    // 1. Unified Message Display function
     function addMessage(text, isUser = false) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `${isUser ? 'message-user ml-auto' : 'message-krishna'} rounded-xl p-4 max-w-[85%] fade-in-up`;
-      
-      if (isUser) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${isUser ? 'message-user ml-auto' : 'message-krishna'} rounded-xl p-4 max-w-[85%] fade-in-up`;
+        
+        const senderName = isUser ? 'Vids' : 'Krishna';
+        const icon = isUser ? '🦋' : '🦚';
+        const align = isUser ? 'justify-end' : 'justify-start';
+        const textAlign = isUser ? 'text-right' : 'text-left';
+        const bgColor = isUser ? 'linear-gradient(135deg, #d4967e 0%, #e8b4a0 100%)' : 'linear-gradient(135deg, #c9a87c 0%, #d4967e 100%)';
+
         messageDiv.innerHTML = `
-          <div class="flex items-start gap-3 justify-end">
-            <div>
-              <p class="text-xs mb-1 font-medium text-right" style="color: #a67c5b; font-family: 'Nunito', sans-serif;">You</p>
-              <p class="text-sm md:text-base leading-relaxed" style="color: #5a4a3a; font-family: 'Nunito', sans-serif;">${text}</p>
+            <div class="flex items-start gap-3 ${align}">
+                ${!isUser ? `<div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: ${bgColor}"><span class="text-white text-sm">${icon}</span></div>` : ''}
+                <div>
+                    <p class="text-xs mb-1 font-medium ${textAlign}" style="color: #a67c5b; font-family: 'Nunito', sans-serif;">${senderName}</p>
+                    <p class="text-sm md:text-base leading-relaxed" style="color: #5a4a3a; font-family: 'Nunito', sans-serif;">${text}</p>
+                </div>
+                ${isUser ? `<div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: ${bgColor}"><span class="text-white text-sm">${icon}</span></div>` : ''}
             </div>
-            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #d4967e 0%, #e8b4a0 100%);">
-              <span class="text-white text-sm">🦋</span>
-            </div>
-          </div>
         `;
-      } else {
-        messageDiv.innerHTML = `
-          <div class="flex items-start gap-3">
-            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #c9a87c 0%, #d4967e 100%);">
-              <span class="text-white text-sm">🦚</span>
-            </div>
-            <div>
-              <p class="text-xs mb-1 font-medium" style="color: #a67c5b; font-family: 'Nunito', sans-serif;">Krishna</p>
-              <p class="text-sm md:text-base leading-relaxed" style="color: #5a4a3a; font-family: 'Nunito', sans-serif;">${text}</p>
-            </div>
-          </div>
-        `;
-      }
-      
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function getKrishnaResponse() {
-      return krishnaWisdom[Math.floor(Math.random() * krishnaWisdom.length)];
-    }
-
-    function showTyping() {
-      typingIndicator.classList.remove('hidden');
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function hideTyping() {
-      typingIndicator.classList.add('hidden');
-    }
-
-    // Replace your existing submit listener with this:
+    // 2. The Final Unified Fetch Logic
     chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = userInput.value.trim();
-      
-      if (text) {
-        addMessage(text, true); // Show user message
-        userInput.value = '';
-        
-        showTyping(); // Show Krishna is "thinking"
-        
-        try {
-
-          // Inside your chatForm.addEventListener:
-          const response = await fetch('http://127.0.0.1:8000/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text }) // 'message' matches your Python BaseModel
-      });
-      
-        const data = await response.json();
-        hideTyping();
-        addMessage(data.answer); // Show the actual Gita-based wisdom
-      } catch (error) {
-        hideTyping();
-        addMessage("My dear friend, the connection to the heavens is weak. Please try again.");
-      }
-    }
-  });
-
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
-        chatForm.dispatchEvent(new Event('submit'));
-      }
+        const text = userInput.value.trim();
+        
+        if (!text) return;
+
+        addMessage(text, true); // Show Vids' message
+        userInput.value = ''; // Clear input
+        
+        typingIndicator.classList.remove('hidden'); // Show typing
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text }) // Correctly sending the STRING text
+            });
+
+            const data = await response.json();
+            typingIndicator.classList.add('hidden');
+
+            if (data.response) {
+                addMessage(data.response, false); // Match the backend key "response"
+            } else {
+                addMessage("Vids, the connection is flickering. Try again?", false);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            typingIndicator.classList.add('hidden');
+            addMessage("Vids, I cannot hear you. Is the Python server running?", false);
+        }
     });
-  </script>
+</script>
  </body>
 </html>
